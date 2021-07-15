@@ -33,6 +33,7 @@ public client class Client {
     # Initializes Salesforce SOAP API Client.
     #
     # + salesforceConfig - Salesforce Connector configuration
+    # + return - An error on failure of initialization or else `()`
     public isolated function init(sfdc:SalesforceConfiguration salesforceConfig) returns error? {
         self.clientConfig = salesforceConfig.clientConfig;
         http:ClientSecureSocket? socketConfig = salesforceConfig?.secureSocketConfig;
@@ -66,7 +67,7 @@ public client class Client {
     # `True` value
     # + return - `ConvertedLead` or error
     isolated remote function convertLead(@display {label: "Lead ID"} string leadId, @display 
-                                         {label: "Not to create Opportunity?"} boolean? opportunityNotRequired = ()) returns 
+                                         {label: "Not to Create Opportunity?"} boolean? opportunityNotRequired = ()) returns 
     ConvertedLead|error {
         string sessionId = check getSessionId(self.clientHandler);
         string payload = check buildXMLPayload(sessionId, leadId, opportunityNotRequired);

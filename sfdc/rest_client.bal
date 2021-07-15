@@ -27,9 +27,10 @@ public client class Client {
     http:Client salesforceClient;
     http:OAuth2RefreshTokenGrantConfig|http:BearerTokenConfig clientConfig;
 
-    # Salesforce Connector endpoint initialization function.
+    #  Initializes Salesforce REST API client.
     #
     # + salesforceConfig - Salesforce Connector configuration
+    # + return - `sfdc:Error` on failure of initialization or else `()`
     public isolated function init(SalesforceConfiguration salesforceConfig) returns Error? {
         self.clientConfig = salesforceConfig.clientConfig;
         http:ClientSecureSocket? socketConfig = salesforceConfig?.secureSocketConfig;
@@ -50,7 +51,7 @@ public client class Client {
     //Describe SObjects
     # Lists the available objects and their metadata for your organization and available to the logged-in user.
     #
-    # + return - `OrgMetadata` record if successful else Error occured
+    # + return - `OrgMetadata` record if successful or else `sfdc:Error`
     @display {label: "Get Available Objects"}
     isolated remote function describeAvailableObjects() returns @tainted@display {label: "Organization Metadata"} 
     OrgMetadata|Error {
@@ -62,7 +63,7 @@ public client class Client {
     # Describes the individual metadata for the specified object.
     #
     # + sobjectName - SObject name
-    # + return - `SObjectBasicInfo` record if successful else Error occured
+    # + return - `SObjectBasicInfo` record if successful or else `sfdc:Error`
     @display {label: "Get SObject Basic Information"}
     isolated remote function getSObjectBasicInfo(@display {label: "SObject Name"} string sobjectName) returns @tainted@display 
     {label: "SObject Basic Information"} SObjectBasicInfo|Error {
@@ -75,7 +76,7 @@ public client class Client {
     # the fields, URLs, and child relationships.
     #
     # + sObjectName - SObject name value
-    # + return - `SObjectMetaData` record if successful else Error occured
+    # + return - `SObjectMetaData` record if successful or else `sfdc:Error`
     @display {label: "Get SObject Description"}
     isolated remote function describeSObject(@display {label: "SObject Name"} string sObjectName) returns @tainted@display 
     {label: "SObject Metadata"} SObjectMetaData|Error {
@@ -86,7 +87,7 @@ public client class Client {
 
     # Query for actions displayed in the UI, given a user, a context, device format, and a record ID.
     #
-    # + return - `SObjectBasicInfo` record if successful else Error occured
+    # + return - `SObjectBasicInfo` record if successful or else `sfdc:Error`
     @display {label: "Get SObject Platform Action"}
     isolated remote function sObjectPlatformAction() returns @tainted@display {label: "SObject Basic Information"} 
     SObjectBasicInfo|Error {
@@ -99,7 +100,7 @@ public client class Client {
     # Accesses records based on the specified object ID, can be used with external objects.
     #
     # + path - Resource path
-    # + return - JSON result if successful else Error occured
+    # + return - JSON result if successful else or else `sfdc:Error`
     @display {label: "Get Record"}
     isolated remote function getRecord(@display {label: "Resource Path"} string path) returns @tainted@display 
     {label: "Result"} json|Error {
@@ -107,11 +108,11 @@ public client class Client {
         return checkAndSetErrors(response);
     }
 
-    # Create records based on relevant object type sent with json record.
+    # Creates records based on relevant object type sent with json record.
     #
     # + sObjectName - SObject name value
     # + recordPayload - JSON record to be inserted
-    # + return - Created entity ID if successful else Error occured
+    # + return - Created entity ID if successful or else `sfdc:Error`
     @display {label: "Create Record"}
     isolated remote function createRecord(@display {label: "SObject Name"} string sObjectName, @display 
                                           {label: "Record Payload"} json recordPayload) returns @tainted@display 
@@ -131,12 +132,12 @@ public client class Client {
 
     }
 
-    # Update records based on relevant object id.
+    # Updates records based on relevant object ID.
     #
     # + sObjectName - SObject name value
-    # + id - SObject id
+    # + id - SObject ID
     # + recordPayload - JSON record to be updated
-    # + return - true if successful else false or Error occured
+    # + return - true if successful else false or else `sfdc:Error`
     @display {label: "Update Record"}
     isolated remote function updateRecord(@display {label: "SObject Name"} string sObjectName, @display 
                                           {label: "SObject ID"} string id, 
@@ -149,11 +150,11 @@ public client class Client {
         json result = check checkAndSetErrors(response, false);
     }
 
-    # Delete existing records based on relevant object id.
+    # Delete existing records based on relevant object ID.
     #
     # + sObjectName - SObject name value
-    # + id - SObject id
-    # + return - true if successful else false or Error occured
+    # + id - SObject ID
+    # + return - true if successful else false or else `sfdc:Error`
     @display {label: "Delete Record"}
     isolated remote function deleteRecord(@display {label: "SObject Name"} string sObjectName, @display 
                                           {label: "SObject ID"} string id) returns @tainted@display {label: "Result"} 
@@ -166,9 +167,9 @@ public client class Client {
     # Get an object record by ID.
     #
     # + sobject - SObject name 
-    # + id - SObject id 
+    # + id - SObject ID
     # + fields - Fields to retrieve 
-    # + return - JSON result if successful else `Error` occured
+    # + return - JSON result if successful or else `sfdc:Error`
     @display {label: "Get Record by ID"}
     isolated remote function getRecordById(@display {label: "SObject Name"} string sobject, @display 
                                            {label: "SObject ID"} string id, @display {label: "Fields to Retrieve"}
@@ -187,9 +188,9 @@ public client class Client {
     # + extIdField - External ID field name 
     # + extId - External ID value 
     # + fields - Fields to retrieve 
-    # + return - JSON result if successful else `Error` occured
+    # + return - JSON result if successful or else `sfdc:Error`
     @display {label: "Get Record by External ID"}
-    isolated remote function getRecordByExtId(@display {label: "SObject name"} string sobject, @display 
+    isolated remote function getRecordByExtId(@display {label: "SObject Name"} string sobject, @display 
                                               {label: "External ID Field Name"} string extIdField, @display 
                                               {label: "External ID"} string extId, @display {label: "Fields to Retrieve"}
                                               string... fields) returns @tainted@display {label: "Result"} json|Error {

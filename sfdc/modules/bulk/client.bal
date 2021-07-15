@@ -35,6 +35,7 @@ public client class Client {
     # Initializes Salesforce Bulk API Client.
     #
     # + salesforceConfig - Salesforce Connector configuration
+    # + return - An error on failure of initialization or else `()`
     public isolated function init(SalesforceConfiguration salesforceConfig) returns error? {
         self.clientConfig = salesforceConfig.clientConfig;
         http:ClientSecureSocket? socketConfig = salesforceConfig?.secureSocketConfig;
@@ -63,7 +64,7 @@ public client class Client {
     }
 
     // ******************************************* Bulk Operations *****************************************************
-    # Create a bulk job.
+    # Creates a bulk job.
     #
     # + operation - Type of operation like insert, delete, etc.
     # + sobj - Type of sobject 
@@ -102,7 +103,7 @@ public client class Client {
         return bulkJob;
     }
 
-    # Get information about a job.
+    # Gets information about a job.
     #
     # + bulkJob - Job object of which the info is required 
     # + return - Job information record or error
@@ -125,7 +126,7 @@ public client class Client {
         }
     }
 
-    # Close a job.
+    # Closes a job.
     #
     # + bulkJob - Job to be closed 
     # + return - Job info after the state change of the job
@@ -141,7 +142,7 @@ public client class Client {
         return jobInfo;
     }
 
-    # Abort a job.
+    # Aborts a job.
     #
     # + bulkJob - Job to be aborted 
     # + return - Job info after the state change of the job
@@ -157,7 +158,7 @@ public client class Client {
         return jobInfo;
     }
 
-    # Add batch to the job.
+    # Adds batch to the job.
     #
     # + bulkJob - Bulk job  
     # + content - Batch content 
@@ -215,7 +216,7 @@ public client class Client {
         }
     }
 
-    # Get information about a batch.
+    # Gets information about a batch.
     #
     # + bulkJob - Bulk job 
     # + batchId - ID of the batch of which info is required 
@@ -238,7 +239,7 @@ public client class Client {
         }
     }
 
-    # Get all batches of the job.
+    # Gets all batches of the job.
     #
     # + bulkJob - Bulkjob
     # + return - List of batch infos
@@ -268,7 +269,7 @@ public client class Client {
         return batchInfoList;
     }
 
-    # Get the request payload of a batch.
+    # Gets the request payload of a batch.
     #
     # + bulkJob - Bulk job
     # + batchId - ID of the batch of which the request is required 
@@ -300,7 +301,7 @@ public client class Client {
         }
     }
 
-    # Get result of the records processed in a batch.
+    # Gets result of the records processed in a batch.
     #
     # + bulkJob - Bulk job  
     # + batchId - Batch ID

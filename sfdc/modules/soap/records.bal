@@ -14,7 +14,7 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Convered lead
+# Represens convered lead.
 #
 # + accountId - Account ID  
 # + contactId - Contact ID

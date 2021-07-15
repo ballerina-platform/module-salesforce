@@ -3,12 +3,12 @@ Ballerina Connector for Salesforce [SOAP API](https://developer.salesforce.com/d
 
 This module supports Salesforce 48.0 version.
  
-## Obtaining tokens
-This is similar to default module. You can refer default module [documentation](https://docs.central.ballerina.io/ballerinax/sfdc/latest).
+## Configuring connector
+This is similar to default module. You can refer default module [documentation](https://docs.central.ballerina.io/ballerinax/sfdc/3.0.0).
 
 ## Quickstart
 
-### Step 1: Import Ballerina Salesforce SOAP module
+#### Step 1: Import Ballerina Salesforce modules
 First, import the `ballerinax/sfdc`, `ballerinax/sfdc.soap` module into the Ballerina project.
 
 ```ballerina
@@ -16,11 +16,10 @@ import ballerinax/sfdc;
 import ballerinax/sfdc.soap;
 ```
 
-### Step 2: Create the Salesforce client
+#### Step 2: Create the Salesforce client
 Create Salesforce SOAP client configuration by reading from config file.
 
 ```ballerina
-
 sfdc:SalesforceConfiguration sfConfig = {
    baseUrl: <"EP_URL">,
    clientConfig: {
@@ -34,7 +33,7 @@ sfdc:SalesforceConfiguration sfConfig = {
 soap:Client soapClient = new (sfConfig);
 ```
 
-### Step 3: Implement operations
+#### Step 3: Implement operations
 ```ballerina
 ConvertedLead|error response = soapClient->convertLead(leadId);
 // lead is converted.
